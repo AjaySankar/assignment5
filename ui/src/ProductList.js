@@ -75,6 +75,9 @@ function ProductRow(props) {
       <td>
         <Link to={`/product/${id}`}> View </Link>
       </td>
+      <td>
+        <Link to={`/edit/product/${id}`}> Edit </Link>
+      </td>
     </tr>
   )
 }
@@ -92,6 +95,7 @@ function ProductTable(props) {
           <th> Price </th>
           <th> Category </th>
           <th> Image </th>
+          <th> Edit here </th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>

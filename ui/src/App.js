@@ -4,6 +4,7 @@ import { ApolloProvider } from "react-apollo"
 import { Route, Switch } from "react-router-dom"
 import ProductList from "./ProductList"
 import ProductView from "./ProductView"
+import UpdateForm from "./UpdateForm"
 
 import "./App.css"
 
@@ -21,6 +22,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={ProductList} />
           <Route path="/product/:id" component={ProductView} />
+          <Route path="/edit/product/:id" component={UpdateForm} />
         </Switch>
       </div>
     </ApolloProvider>
