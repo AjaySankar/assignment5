@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import { gql } from "apollo-boost"
 import ProductForm from "./ProductForm"
+import { Link } from 'react-router-dom';
 
 const getProductsQuery = gql`
   {
@@ -64,7 +65,7 @@ class ProductList extends Component {
 
 function ProductRow(props) {
   const {
-    product: { price = "", name = "", image = "#", category = "" },
+    product: { id = "", price = "", name = "", category = "" },
   } = props
   return (
     <tr>
@@ -72,11 +73,7 @@ function ProductRow(props) {
       <td> ${price} </td>
       <td> {category} </td>
       <td>
-        {" "}
-        <a href={image} target="__blank">
-          {" "}
-          View{" "}
-        </a>{" "}
+        <Link to={`/product/${id}`}> View </Link>
       </td>
     </tr>
   )
