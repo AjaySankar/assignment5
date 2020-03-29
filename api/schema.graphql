@@ -23,8 +23,8 @@ input inputProduct {
 }
 
 type Query {
-  products: [Product],
-  getProducts: [Product]
+  getProducts: [Product],
+  getProductInfo(id: Int): Product
 }
 
 type Mutation {

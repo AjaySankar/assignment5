@@ -39,6 +39,13 @@ const resolvers = {
         return [];
       }
     },
+    getProductInfo: (root, {id: productId}) => {
+      if (!db) {
+        throw new Error('Empty database connection!!');
+      }
+      const collection = db.collection('products');
+      return collection.findOne({ 'id': productId }).then(product => product)
+    }
   },
   Mutation: {
     addProduct: (root, args) => {
