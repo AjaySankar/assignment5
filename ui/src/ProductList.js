@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import { gql } from "apollo-boost"
+import { Link } from "react-router-dom"
 import ProductForm from "./ProductForm"
-import { Link } from 'react-router-dom';
 
 const getProductsQuery = gql`
   {
