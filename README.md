@@ -42,6 +42,30 @@ mutation {
 
 ```
 
+Following is the example mutation to update a product.
+
+```
+
+mutation {
+  updateProduct(
+    product: {
+    id: 6
+    category: Shirts
+    name: "SDSU Sweat Shirt"
+    price: 25.33
+    image: "https://i.ebayimg.com/images/g/zigAAOSwL05cWzE6/s-l300.jpg"
+    }
+  ) {
+    id
+    category
+    name
+    price
+    image
+  }
+}
+
+```
+
 Run the following commands to create a client instance.
 
 * cd ui/
