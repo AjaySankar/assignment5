@@ -55,16 +55,29 @@ const resolvers = {
       const collection = db.collection('products');
       collection.countDocuments({}).then((count) => {
         const newProduct = { ...defaultProductInfo, ...args.product || {}, id: count + 1 };
-        const promise = collection.insertOne(newProduct);
         // eslint-disable-next-line no-unused-vars
-        promise.then(({ insertedId }) => {
+        return collection.insertOne(newProduct).then(({ insertedId }) => {
           const { id } = newProduct;
-          collection.findOne({ id })
+          return collection.findOne({ id })
             .then((product) => product);
         });
       })
         .catch((error) => console.log(`Product insertion failed: ${error}`));
     },
+    updateProduct: (root, args) => {
+      if (!db) {
+        throw new Error('Empty database connection!!');
+      }
+      const collection = db.collection('products');
+      const newProduct = { ...defaultProductInfo, ...args.product || {} };
+      const { id } = newProduct;
+      // eslint-disable-next-line no-unused-vars
+      return collection.update({ 'id': { $eq: id } }, newProduct, ).then(({ insertedId }) => {
+        return collection.findOne({ id })
+          .then((product) => product);
+      })
+      .catch((error) => console.log(`Product ${id} - update failed: ${error}`));
+    }
   },
 };
 

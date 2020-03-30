@@ -22,11 +22,20 @@ input inputProduct {
   image: String
 }
 
+input updateProduct {
+  id: Int,
+  category: Category,
+  name: String,
+  price: Float,
+  image: String
+}
+
 type Query {
   getProducts: [Product],
   getProductInfo(id: Int): Product
 }
 
 type Mutation {
-  addProduct(product: inputProduct): Product
+  addProduct(product: inputProduct): Product,
+  updateProduct(product: updateProduct): Product
 }
