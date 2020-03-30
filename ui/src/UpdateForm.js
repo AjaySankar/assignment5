@@ -60,8 +60,6 @@ class UpdateForm extends Component {
     const { product } = this.state
     const { id, category, name, image, price } = product
     const { updateProduct } = this.props
-    window.console.log("Before update in client")
-    window.console.log(product)
     updateProduct({
       variables: {
         id,
@@ -77,6 +75,7 @@ class UpdateForm extends Component {
         this.setState({
           product: { ...RESET_VALUES },
         })
+        window.alert("Succesfully updated")
       })
       .catch((error) => {
         window.console.error(
