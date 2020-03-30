@@ -63,6 +63,19 @@ const resolvers = {
           .then((product) => product))
         .catch((error) => console.log(`Product ${id} - update failed: ${error}`));
     },
+    removeProduct: (root, args) => {
+      if (!db) {
+        throw new Error('Empty database connection!!');
+      }
+      const collection = db.collection('products');
+      const { id = 0 } = args;
+      if (!id) {
+        throw new Error(`Invalid product id - ${args.id} requested to be deleted !!`);
+      }
+      return collection.deleteOne({ id: { $eq: id } })
+        .then(() => true)
+        .catch((error) => console.log(`Product ${id} - delete failed: ${error}`));
+    }
   },
 };
 

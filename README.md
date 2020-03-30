@@ -66,6 +66,18 @@ mutation {
 
 ```
 
+Following is the example mutation to delete a product.
+
+```
+
+mutation {
+  removeProduct(
+     id: 7
+  )
+}
+
+```
+
 Run the following commands to create a client instance.
 
 * cd ui/

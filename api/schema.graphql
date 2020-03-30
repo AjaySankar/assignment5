@@ -37,5 +37,6 @@ type Query {
 
 type Mutation {
   addProduct(product: inputProduct): Product,
-  updateProduct(product: updateProduct): Product
+  updateProduct(product: updateProduct): Product,
+  removeProduct(id: Int): Boolean
 }
