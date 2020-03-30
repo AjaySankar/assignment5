@@ -20,9 +20,11 @@ export default class TextInput extends Component {
 
   render() {
     const { value } = this.state
+    const { name } = this.props
     return (
       <input
         type="text"
+        name={name}
         value={value}
         onBlur={this.onBlur}
         onChange={this.onChange}

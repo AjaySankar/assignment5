@@ -18,7 +18,7 @@ export default class NumInput extends Component {
   onChange({ target: { value = " " } }) {
     // Remove the currency symbol '$'
     const strippedValue = value.substring(1)
-    if (value.match(/^\d*\.?\d*$/)) {
+    if (strippedValue.match(/^\d*\.?\d*$/)) {
       this.setState({ value: `$${strippedValue}` })
     }
   }
@@ -31,9 +31,11 @@ export default class NumInput extends Component {
 
   render() {
     const { value } = this.state
+    const { name } = this.props
     return (
       <input
         type="text"
+        name={name}
         value={value}
         onBlur={this.onBlur}
         onChange={this.onChange}
