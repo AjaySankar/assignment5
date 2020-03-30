@@ -18,12 +18,12 @@ const resolvers = {
         throw new Error('Empty database connection!!');
       }
       return db.collection('products').find({})
-      .toArray()
-      .then((products) => products)
-      .catch((error) => {
-        console.log(`Failed to retrieve products - ${error}`)
-        return []
-      })
+        .toArray()
+        .then((products) => products)
+        .catch((error) => {
+          console.log(`Failed to retrieve products - ${error}`);
+          return [];
+        });
     },
     getProductInfo: (root, { id: productId }) => {
       if (!db) {
@@ -57,13 +57,12 @@ const resolvers = {
       const collection = db.collection('products');
       const newProduct = { ...defaultProductInfo, ...args.product || {} };
       const { id } = newProduct;
-      // eslint-disable-next-line no-unused-vars
-      return collection.update({ 'id': { $eq: id } }, newProduct, ).then(({ insertedId }) => {
-        return collection.findOne({ id })
-          .then((product) => product);
-      })
-      .catch((error) => console.log(`Product ${id} - update failed: ${error}`));
-    }
+      return collection.update({ id: { $eq: id } }, newProduct)
+        // eslint-disable-next-line no-unused-vars
+        .then(({ insertedId }) => collection.findOne({ id })
+          .then((product) => product))
+        .catch((error) => console.log(`Product ${id} - update failed: ${error}`));
+    },
   },
 };
 
