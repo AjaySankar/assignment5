@@ -75,7 +75,7 @@ const resolvers = {
       return collection.deleteOne({ id: { $eq: id } })
         .then(() => true)
         .catch((error) => console.log(`Product ${id} - delete failed: ${error}`));
-    }
+    },
   },
 };
 
