@@ -11,33 +11,19 @@ const defaultProductInfo = {
 let db = null;
 const { MongoClient } = require('mongodb');
 
-function getProductsFromMongo() {
-  if (!db) {
-    throw new Error('Empty database connection!!');
-  }
-  const promise = new Promise((resolve, reject) => {
-    const collection = db.collection('products');
-    collection.find({})
-      .toArray((err, products) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(products);
-        }
-      });
-  });
-  return promise;
-}
-
 const resolvers = {
   Query: {
     getProducts: () => {
-      try {
-        return getProductsFromMongo();
-      } catch (error) {
-        console.log(`Fetching products from mongo db failed ${error}`);
-        return [];
+      if (!db) {
+        throw new Error('Empty database connection!!');
       }
+      return db.collection('products').find({})
+      .toArray()
+      .then((products) => products)
+      .catch((error) => {
+        console.log(`Failed to retrieve products - ${error}`)
+        return []
+      })
     },
     getProductInfo: (root, { id: productId }) => {
       if (!db) {
