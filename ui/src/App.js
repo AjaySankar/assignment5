@@ -2,6 +2,7 @@ import React from "react"
 import ApolloClient from "apollo-boost"
 import { ApolloProvider } from "react-apollo"
 import { Route, Switch } from "react-router-dom"
+import { createHttpLink } from "apollo-link-http"
 import ProductList from "./ProductList"
 import ProductView from "./ProductView"
 import UpdateForm from "./UpdateForm"
@@ -9,6 +10,11 @@ import UpdateForm from "./UpdateForm"
 import "./App.css"
 
 const client = new ApolloClient({
+  link: createHttpLink({
+    fetchOptions: {
+      method: "POST",
+    },
+  }),
   uri: "http://localhost:3000/graphql",
 })
 
