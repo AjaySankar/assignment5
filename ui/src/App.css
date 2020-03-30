@@ -35,7 +35,11 @@ form > input, select {
 input[type=submit] {
   height: 50px;
   width: 200px;
-  border: none;
   padding: 20px;
+  cursor: pointer;
+  border-width: 2px;
+}
+
+input[type=button] {
   cursor: pointer;
 }
