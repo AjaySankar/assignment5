@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import { gql } from "apollo-boost"
-import { Link } from "react-router-dom"
 import ProductForm from "./ProductForm"
+import ProductRow from "./ProductRow"
 
 const getProductsQuery = gql`
   {
@@ -26,6 +26,7 @@ class ProductList extends Component {
   }
 
   handleSave() {
+    window.console.log("Refresh products...")
     this.setState((prevState) => ({ ...prevState }))
   }
 
@@ -50,7 +51,7 @@ class ProductList extends Component {
     }
     return (
       <div>
-        <ProductTable products={getProducts || []} />
+        <ProductTable products={getProducts || []} onSave={this.handleSave} />
         <h3> Add a new product to inventory </h3>
         <hr />
         <ProductForm
@@ -63,29 +64,12 @@ class ProductList extends Component {
   }
 }
 
-function ProductRow(props) {
-  const {
-    product: { id = "", price = "", name = "", category = "" },
-  } = props
-  return (
-    <tr>
-      <td> {name} </td>
-      <td> ${price} </td>
-      <td> {category} </td>
-      <td>
-        <Link to={`/product/${id}`}> View </Link>
-      </td>
-      <td>
-        <Link to={`/edit/product/${id}`}> Edit </Link>
-      </td>
-    </tr>
-  )
-}
-
 function ProductTable(props) {
-  const { products = [] } = props
+  const { products = [], onSave } = props
   const rows = products.map((productInfo) => {
-    return <ProductRow key={productInfo.id} product={productInfo} />
+    return (
+      <ProductRow key={productInfo.id} product={productInfo} onSave={onSave} />
+    )
   })
   return (
     <table>
@@ -95,7 +79,8 @@ function ProductTable(props) {
           <th> Price </th>
           <th> Category </th>
           <th> Image </th>
-          <th> Edit here </th>
+          <th> Edit </th>
+          <th> Delete </th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
