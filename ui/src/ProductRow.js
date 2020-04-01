@@ -19,7 +19,6 @@ class ProductRow extends Component {
   }
 
   handleDelete() {
-    window.console.log(this.props)
     const { deleteProduct, onSave } = this.props
     const {
       product: { id },

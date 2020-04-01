@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { graphql } from "react-apollo"
 import { gql } from "apollo-boost"
+import { Query } from "@apollo/react-components"
 import ProductForm from "./ProductForm"
 import ProductRow from "./ProductRow"
 
@@ -26,40 +26,44 @@ class ProductList extends Component {
   }
 
   handleSave() {
-    window.console.log("Refresh products...")
     this.setState((prevState) => ({ ...prevState }))
   }
 
   render() {
-    const { formData } = this.state
-    const {
-      allProductsQuery: { loading, error, getProducts },
-    } = this.props
-    if (loading) {
-      return (
-        <div>
-          <p> Loading Products... </p>
-        </div>
-      )
-    }
-    if (error) {
-      return (
-        <div>
-          <p> Error has occured while fetching products ... </p>
-        </div>
-      )
-    }
     return (
-      <div>
-        <ProductTable products={getProducts || []} onSave={this.handleSave} />
-        <h3> Add a new product to inventory </h3>
-        <hr />
-        <ProductForm
-          key={JSON.stringify(formData || {})}
-          formInput={formData}
-          onSave={this.handleSave}
-        />
-      </div>
+      <Query query={getProductsQuery} pollInterval={250}>
+        {({ loading, error, data }) => {
+          const { formData } = this.state
+          if (loading) {
+            return (
+              <div>
+                <p> Loading Products... </p>
+              </div>
+            )
+          }
+          if (error) {
+            return (
+              <div>
+                <p> Error has occured while fetching products ... </p>
+              </div>
+            )
+          }
+
+          const { getProducts = [] } = data
+          return (
+            <div>
+              <ProductTable products={getProducts} onSave={this.handleSave} />
+              <h3> Add a new product to inventory </h3>
+              <hr />
+              <ProductForm
+                key={JSON.stringify(formData || {})}
+                formInput={formData}
+                onSave={this.handleSave}
+              />
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
@@ -88,6 +92,4 @@ function ProductTable(props) {
   )
 }
 
-export default graphql(getProductsQuery, { name: "allProductsQuery" })(
-  ProductList
-)
+export default ProductList
