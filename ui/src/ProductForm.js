@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { graphql } from "react-apollo"
 import { gql } from "apollo-boost"
+import { Mutation } from "@apollo/react-components"
 
 const RESET_VALUES = { name: "", price: "$", category: "Shirts", image: "" }
 
@@ -32,7 +32,6 @@ class ProductForm extends Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    this.handleSave = this.handleSave.bind(this)
     const { formInput } = this.props
     this.state = {
       product: formInput || { ...RESET_VALUES },
@@ -46,76 +45,69 @@ class ProductForm extends Component {
     })
   }
 
-  handleSave(e) {
-    const { product } = this.state
-    const { category, name, image } = product
-    const price = parseFloat(product.price.substring(1)) || 0
-    const { addProduct, onSave } = this.props
-    const promise = addProduct({
-      variables: {
-        category,
-        name,
-        price,
-        image,
-      },
-    })
-    promise
-      // eslint-disable-next-line no-unused-vars
-      .then(({ data = {} }) => {
-        // On succesful product save, refresh the product table
-        onSave()
-        // reset the form values to blank after submitting
-        this.setState({
-          product: { ...RESET_VALUES },
-        })
-      })
-      .catch((error) => {
-        window.console.error(
-          `Error occured while add new product: ${error || ""}`
-        )
-      })
-      .finally(() => e.preventDefault()) // prevent the form submit event from triggering an HTTP Post
-  }
-
   render() {
-    const {
-      product: { price, name, image },
-    } = this.state
     return (
-      <form>
-        <label>Category</label>
-        <label>Price Per Unit </label>
-        <select name="category" onBlur={this.handleChange}>
-          <option value="Shirts">Shirts</option>
-          <option value="Jeans">Jeans</option>
-          <option value="Jackets">Jackets</option>
-          <option value="Sweaters">Sweaters</option>
-          <option value="Accessories">Accessories</option>
-        </select>
-        <input
-          type="text"
-          name="price"
-          onChange={this.handleChange}
-          value={price}
-        />
-        <label>Product Name </label>
-        <label>Image URL </label>
-        <input
-          type="text"
-          name="name"
-          onChange={this.handleChange}
-          value={name}
-        />
-        <input
-          type="text"
-          name="image"
-          onChange={this.handleChange}
-          value={image}
-        />
-        <input type="submit" value="Add Product" onClick={this.handleSave} />
-      </form>
+      <Mutation mutation={addProductMutation}>
+        {(addProduct) => {
+          const {
+            product: { category, price: inputPrice, name, image },
+          } = this.state
+          return (
+            <div>
+              <form
+                onSubmit={(e) => {
+                  const price = parseFloat(inputPrice.substring(1)) || 0
+                  e.preventDefault()
+                  addProduct({
+                    variables: {
+                      category,
+                      name,
+                      price,
+                      image,
+                    },
+                  })
+                  this.setState({
+                    product: { ...RESET_VALUES },
+                  })
+                }}
+              >
+                <label>Category</label>
+                <label>Price Per Unit </label>
+                <select name="category" onBlur={this.handleChange}>
+                  <option value="Shirts">Shirts</option>
+                  <option value="Jeans">Jeans</option>
+                  <option value="Jackets">Jackets</option>
+                  <option value="Sweaters">Sweaters</option>
+                  <option value="Accessories">Accessories</option>
+                </select>
+                <input
+                  type="text"
+                  name="price"
+                  onChange={this.handleChange}
+                  value={inputPrice}
+                />
+                <label>Product Name </label>
+                <label>Image URL </label>
+                <input
+                  type="text"
+                  name="name"
+                  onChange={this.handleChange}
+                  value={name}
+                />
+                <input
+                  type="text"
+                  name="image"
+                  onChange={this.handleChange}
+                  value={image}
+                />
+                <input type="submit" value="Add Product" />
+              </form>
+            </div>
+          )
+        }}
+      </Mutation>
     )
   }
 }
 
-export default graphql(addProductMutation, { name: "addProduct" })(ProductForm)
+export default ProductForm
