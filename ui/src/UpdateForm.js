@@ -75,7 +75,6 @@ class UpdateForm extends Component {
         this.setState({
           product: { ...RESET_VALUES },
         })
-        window.alert("Succesfully updated")
       })
       .catch((error) => {
         window.console.error(
