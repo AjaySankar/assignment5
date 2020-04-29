@@ -39,6 +39,7 @@ class UpdateForm extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.getProductInfo = this.getProductInfo.bind(this)
     const {
       match: {
         params: { id },
@@ -50,11 +51,7 @@ class UpdateForm extends Component {
   }
 
   componentDidMount() {
-    this.getProductInfo()
-    .then(({ data = {}}) => this.setState({
-        product: data.getProductInfo
-      }))
-    .catch(error => window.console.log(error))
+    this.getProductInfo();
   }
 
   getProductInfo() {
@@ -63,7 +60,7 @@ class UpdateForm extends Component {
         params: { id },
       },
     } = this.props
-    return ProductsClient.query({
+    ProductsClient.query({
       query: gql`
         query {
           getProductInfo(
@@ -78,6 +75,10 @@ class UpdateForm extends Component {
         }
       `
     })
+    .then(({ data = {}}) => this.setState({
+      product: data.getProductInfo
+    }))
+    .catch(error => window.console.log(error))
   }
 
   handleChange({ target }, naturalValue) {
@@ -118,13 +119,13 @@ class UpdateForm extends Component {
 
   render() {
     const {
-      product: { price, name, image },
+      product: { category, price, name, image },
     } = this.state
     return (
       <form>
         <label>Category</label>
         <label>Price Per Unit </label>
-        <select name="category" onBlur={this.handleChange}>
+        <select name="category" onChange={this.handleChange} value={category}>
           <option value="Shirts">Shirts</option>
           <option value="Jeans">Jeans</option>
           <option value="Jackets">Jackets</option>
@@ -137,6 +138,7 @@ class UpdateForm extends Component {
         <TextInput name="name" onChange={this.handleChange} value={name} />
         <TextInput name="image" onChange={this.handleChange} value={image} />
         <input type="submit" value="Update Product" onClick={this.handleSave} />
+        <input type="reset" value="Reset Product" onClick={this.getProductInfo} />
         <Link to="/"> Go to Home </Link>
       </form>
     )

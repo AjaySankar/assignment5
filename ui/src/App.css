@@ -32,7 +32,7 @@ form > input, select {
   width: 200px;
 }
 
-input[type=submit] {
+input[type=submit], input[type=reset] {
   height: 50px;
   width: 200px;
   padding: 20px;
