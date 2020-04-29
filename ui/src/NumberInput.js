@@ -23,6 +23,14 @@ export default class NumInput extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const {value: prevValue} = prevProps
+    const {value: newValue} = this.props
+    if(prevValue !== newValue) {
+      this.setState({ value: `$${newValue}` })
+    }
+  }
+
   onBlur(e) {
     const { onChange } = this.props
     const { value } = this.state

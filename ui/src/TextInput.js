@@ -12,6 +12,14 @@ export default class TextInput extends Component {
     this.setState({ value })
   }
 
+  componentDidUpdate(prevProps) {
+    const {value: prevValue} = prevProps
+    const {value: newValue} = this.props
+    if(prevValue !== newValue) {
+      this.setState({ value: newValue })
+    }
+  }
+
   onBlur(e) {
     const { onChange } = this.props
     const { value } = this.state
