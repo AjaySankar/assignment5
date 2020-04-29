@@ -101,6 +101,7 @@ class ProductForm extends Component {
                   value={image}
                 />
                 <input type="submit" value="Add Product" />
+                <input type="reset" value="Reset" onClick={() => this.setState({product: { ...RESET_VALUES }})}/>
               </form>
             </div>
           )
